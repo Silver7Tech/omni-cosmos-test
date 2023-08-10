@@ -46437,6 +46437,121 @@ paths:
                         }
       tags:
         - Query
+  /test/test/get_block_hash/{blockNumber}:
+    get:
+      summary: Queries a list of GetBlockHash items.
+      operationId: TestTestGetBlockHash
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              blockHash:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: blockNumber
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /test/test/get_last_block:
+    get:
+      summary: Queries a list of GetLastBlock items.
+      operationId: TestTestGetLastBlock
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              blockNumber:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /test/test/get_storage/{address}/{position}/{blockTag}:
+    get:
+      summary: Queries a list of GetStorage items.
+      operationId: TestTestGetStorage
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              storage:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+        - name: position
+          in: path
+          required: true
+          type: string
+        - name: blockTag
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /test/test/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -75215,6 +75330,21 @@ definitions:
   test.test.Params:
     type: object
     description: Params defines the parameters for the module.
+  test.test.QueryGetBlockHashResponse:
+    type: object
+    properties:
+      blockHash:
+        type: string
+  test.test.QueryGetLastBlockResponse:
+    type: object
+    properties:
+      blockNumber:
+        type: string
+  test.test.QueryGetStorageResponse:
+    type: object
+    properties:
+      storage:
+        type: string
   test.test.QueryParamsResponse:
     type: object
     properties:

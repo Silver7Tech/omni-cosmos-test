@@ -1,4 +1,5 @@
 syntax = "proto3";
+
 package test.test;
 
 import "gogoproto/gogo.proto";
@@ -10,17 +11,62 @@ option go_package = "test/x/test/types";
 
 // Query defines the gRPC querier service.
 service Query {
+  
   // Parameters queries the parameters of the module.
-  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/test/test/params";
+  
+  }
+  
+  // Queries a list of GetLastBlock items.
+  rpc GetLastBlock (QueryGetLastBlockRequest) returns (QueryGetLastBlockResponse) {
+    option (google.api.http).get = "/test/test/get_last_block";
+  
+  }
+  
+  // Queries a list of GetBlockHash items.
+  rpc GetBlockHash (QueryGetBlockHashRequest) returns (QueryGetBlockHashResponse) {
+    option (google.api.http).get = "/test/test/get_block_hash/{blockNumber}";
+  
+  }
+  
+  // Queries a list of GetStorage items.
+  rpc GetStorage (QueryGetStorageRequest) returns (QueryGetStorageResponse) {
+    option (google.api.http).get = "/test/test/get_storage/{address}/{position}/{blockTag}";
+  
   }
 }
-
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
 
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
+  
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
 }
+
+message QueryGetLastBlockRequest {}
+
+message QueryGetLastBlockResponse {
+  string blockNumber = 1;
+}
+
+message QueryGetBlockHashRequest {
+  uint64 blockNumber = 1;
+}
+
+message QueryGetBlockHashResponse {
+  string blockHash = 1;
+}
+
+message QueryGetStorageRequest {
+  string address  = 1;
+  string position = 2;
+  string blockTag = 3;
+}
+
+message QueryGetStorageResponse {
+  string storage = 1;
+}
+
