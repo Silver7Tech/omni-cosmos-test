@@ -1,7 +1,22 @@
 syntax = "proto3";
+
 package test.test;
 
 option go_package = "test/x/test/types";
 
 // Msg defines the Msg service.
-service Msg {}
+service Msg {
+  rpc State (MsgState) returns (MsgStateResponse);
+}
+message MsgState {
+  string creator  = 1;
+  string address  = 2;
+  string position = 3;
+  string blocktag = 4;
+  string storage  = 5;
+}
+
+message MsgStateResponse {
+  uint64 id = 1;
+}
+

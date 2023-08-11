@@ -6,6 +6,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "test/test/params.proto";
+import "test/test/omni.proto";
 
 option go_package = "test/x/test/types";
 
@@ -33,6 +34,18 @@ service Query {
   // Queries a list of GetStorage items.
   rpc GetStorage (QueryGetStorageRequest) returns (QueryGetStorageResponse) {
     option (google.api.http).get = "/test/test/get_storage/{address}/{position}/{blockTag}";
+  
+  }
+  
+  // Queries a list of ShowStorage items.
+  rpc ShowStorage (QueryShowStorageRequest) returns (QueryShowStorageResponse) {
+    option (google.api.http).get = "/test/test/show_storage/{id}";
+  
+  }
+  
+  // Queries a list of ListStorage items.
+  rpc ListStorage (QueryListStorageRequest) returns (QueryListStorageResponse) {
+    option (google.api.http).get = "/test/test/list_storage";
   
   }
 }
@@ -67,6 +80,23 @@ message QueryGetStorageRequest {
 }
 
 message QueryGetStorageResponse {
-  string storage = 1;
+  string count = 1;
+}
+
+message QueryShowStorageRequest {
+  uint64 id = 1;
+}
+
+message QueryShowStorageResponse {
+  string omni = 1;
+}
+
+message QueryListStorageRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryListStorageResponse {
+  repeated Omni omni = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

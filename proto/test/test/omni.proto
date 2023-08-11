@@ -1,0 +1,13 @@
+syntax = "proto3";
+package test.test;
+
+option go_package = "test/x/test/types";
+
+message Omni {
+  
+  uint64 id = 1; 
+  string address = 2; 
+  string position = 3; 
+  string blocktag = 4; 
+  string storage = 5; 
+}

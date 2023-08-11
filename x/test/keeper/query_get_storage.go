@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	"test/x/ethservice"
 	"test/x/test/types"
@@ -10,6 +11,20 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
+
+func PrefixStoreToString(ctx sdk.Context, store sdk.KVStore, prefix []byte) string {
+	iterator := sdk.KVStorePrefixIterator(store, prefix)
+	defer iterator.Close()
+
+	var output string
+	for ; iterator.Valid(); iterator.Next() {
+		key := string(iterator.Key()[len(prefix):]) // Remove the prefix from the key
+		value := string(iterator.Value())
+		output += fmt.Sprintf("Key: %s, Value: %s\n", key, value)
+	}
+
+	return output
+}
 
 func (k Keeper) GetStorage(goCtx context.Context, req *types.QueryGetStorageRequest) (*types.QueryGetStorageResponse, error) {
 	if req == nil {
@@ -24,9 +39,13 @@ func (k Keeper) GetStorage(goCtx context.Context, req *types.QueryGetStorageRequ
 		return nil, err
 	}
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	// TODO: Process the query
-	_ = ctx
-
-	return &types.QueryGetStorageResponse{Storage: storage}, nil
+	var result = types.Omni{
+		Address:  req.Address,
+		Position: req.Position,
+		Blocktag: req.BlockTag,
+		Storage:  storage,
+	}
+	count := k.AppendData(ctx, result)
+	_ = count
+	return &types.QueryGetStorageResponse{Count: PrefixStoreToString(ctx, ctx.KVStore(k.storeKey), types.KeyPrefix(types.OmniKey))}, nil
 }
